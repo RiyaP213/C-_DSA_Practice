@@ -10,7 +10,7 @@ int main(){
         isprime=false;
     }
     else{
-        for(int i=2; i*i<=n; i++){
+        for(int i=2; i*i<=n; i++){// we can also do i<=sqrt(n) but that is costly as we have to calculate the square root of n every time
             if(n%i==0){
                 isprime=false;
                 break;

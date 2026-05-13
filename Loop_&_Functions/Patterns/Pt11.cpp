@@ -7,9 +7,7 @@ int main(){
     cout << "Enter a number: ";
     cin >> n;
 
-    // ======================
     // UPPER HALF
-    // ======================
 
     for(int i=1; i<=n; i++){
 

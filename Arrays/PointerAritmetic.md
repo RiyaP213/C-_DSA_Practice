@@ -1,12 +1,105 @@
 # Pointer Arithmetic
 
-Pointer arithmetic means doing operations like `++`, `--`, `+`, and `-` on pointers.
+Pointer arithmetic means moving a pointer through memory using operations like:
 
-A pointer stores an address.
+```text
+++
+--
++
+-
+comparison
+```
+
+A pointer stores a **memory address**.
+
+Memory addresses are usually shown in **hexadecimal**, like:
+
+```text
+0x01ef100
+0x01ef104
+0x01ef108
+```
+
+The exact address can change every time the program runs, but the idea is the same.
+
+---
+
+## Big Idea
+
+Pointer arithmetic moves by **elements**, not by raw bytes.
+
+Example:
 
 ```cpp
-int x = 10;
-int* ptr = &x;
+int arr[3] = {10, 20, 30};
+```
+
+If `int` takes 4 bytes, memory may look like this:
+
+```text
+Value:      10          20          30
+Index:      arr[0]      arr[1]      arr[2]
+Address:    0x01ef100   0x01ef104   0x01ef108
+```
+
+So if:
+
+```cpp
+int* ptr = arr;
+```
+
+then:
+
+```text
+ptr points to arr[0]      → 0x01ef100
+ptr + 1 points to arr[1]  → 0x01ef104
+ptr + 2 points to arr[2]  → 0x01ef108
+```
+
+Even though we write:
+
+```cpp
+ptr + 1
+```
+
+the address moves by **4 bytes** because `ptr` is an `int*`.
+
+So:
+
+```text
+int*    moves by 4 bytes usually
+char*   moves by 1 byte
+double* moves by 8 bytes usually
+```
+
+Main rule:
+
+```text
+Pointer arithmetic counts elements, not bytes.
+```
+
+---
+
+# Pointer vs Array Name
+
+Pointers and arrays are related, but they are not exactly the same.
+
+```text
+Pointer:
+A variable that stores an address.
+It can be moved and reassigned.
+
+Array name:
+Represents the starting address of the array.
+It is fixed and cannot be reassigned.
+```
+
+Example:
+
+```cpp
+int arr[3] = {10, 20, 30};
+
+int* ptr = arr;
 ```
 
 Here:
@@ -15,58 +108,30 @@ Here:
 ptr
 ```
 
-stores the address of `x`.
+and:
 
 ```cpp
-*ptr
+arr
 ```
 
-means the value at that address.
+both point to the first element.
+
+But:
+
+```cpp
+ptr++; // allowed
+arr++; // error
+```
+
+Because `ptr` is a normal pointer variable, but `arr` is a fixed array name.
 
 ---
 
-## Important Idea
+# 1. Increment and Decrement
 
-When we do arithmetic on a pointer, it does **not** move by 1 byte normally.
+## Normal Pointer
 
-It moves by the size of the data type it points to.
-
-Example:
-
-```cpp
-int* ptr;
-ptr++;
-```
-
-If `int` is 4 bytes, then `ptr++` moves forward by **4 bytes**.
-
-If:
-
-```cpp
-char* ptr;
-ptr++;
-```
-
-then `ptr++` moves forward by **1 byte**, because `char` is 1 byte.
-
-If:
-
-```cpp
-double* ptr;
-ptr++;
-```
-
-then `ptr++` moves forward by **8 bytes**, because `double` is usually 8 bytes.
-
----
-
-# 1. Increment and Decrement Operators
-
-## 1A. Increment and Decrement on Normal Pointers
-
-A normal pointer can be incremented or decremented.
-
-Example:
+A normal pointer can move forward and backward.
 
 ```cpp
 #include <iostream>
@@ -79,11 +144,11 @@ int main() {
 
     cout << *ptr << endl; // 10
 
-    ptr++; // move to next integer
+    ptr++; // moves to arr[1]
 
     cout << *ptr << endl; // 20
 
-    ptr--; // move back to previous integer
+    ptr--; // moves back to arr[0]
 
     cout << *ptr << endl; // 10
 
@@ -91,7 +156,7 @@ int main() {
 }
 ```
 
-Explanation:
+What happens:
 
 ```text
 ptr starts at arr[0]
@@ -99,105 +164,77 @@ ptr++ moves to arr[1]
 ptr-- moves back to arr[0]
 ```
 
-Since `ptr` is an `int*`, each increment moves by the size of `int`.
-
-Usually:
+If the address of `arr[0]` is:
 
 ```text
-ptr++ means move forward by 4 bytes
-ptr-- means move backward by 4 bytes
+0x01ef100
 ```
 
----
+then:
 
-## 1B. Increment and Decrement with Arrays
-
-An array name behaves like a pointer to the first element.
-
-Example:
-
-```cpp
-int arr[3] = {10, 20, 30};
+```text
+ptr++ moves from 0x01ef100 to 0x01ef104
 ```
 
-Here:
-
-```cpp
-arr
-```
-
-represents the address of the first element.
+because `int` usually takes 4 bytes.
 
 So:
 
-```cpp
-arr == &arr[0]
-```
-
-But the array name itself cannot be incremented or decremented.
-
-This is not allowed:
-
-```cpp
-arr++; // ERROR
-```
-
-because `arr` is fixed.
-
-Correct way:
-
-```cpp
-int* ptr = arr;
-ptr++; // allowed
-```
-
-Example:
-
-```cpp
-#include <iostream>
-using namespace std;
-
-int main() {
-    int arr[3] = {10, 20, 30};
-
-    int* ptr = arr;
-
-    cout << *ptr << endl; // 10
-
-    ptr++;
-
-    cout << *ptr << endl; // 20
-
-    return 0;
-}
-```
-
-Important:
-
 ```text
-Array name = fixed starting address
-Normal pointer = movable address holder
+ptr++ does not mean address + 1 byte.
+ptr++ means move to the next element.
 ```
 
 ---
 
-# 2. Addition and Subtraction
+## Array Name
 
-## 2A. Addition with Normal Pointers
+The array name cannot be incremented or decremented.
 
-We can add an integer to a pointer.
+```cpp
+int arr[3] = {10, 20, 30};
+
+arr++; // error
+arr--; // error
+```
+
+Why?
+
+Because `arr` is the fixed starting address of the array.
+
+But this is allowed:
+
+```cpp
+int* ptr = arr;
+ptr++;
+```
+
+Key difference:
+
+```text
+Pointer can move.
+Array name cannot move.
+```
+
+---
+
+# 2. Addition
+
+## Normal Pointer
+
+We can add numbers to a pointer.
 
 ```cpp
 ptr + 1
 ```
 
-means move to the next element.
+means move 1 element forward.
 
 ```cpp
 ptr + 2
 ```
 
-means move two elements forward.
+means move 2 elements forward.
 
 Example:
 
@@ -219,23 +256,28 @@ int main() {
 }
 ```
 
-This works because:
-
-```cpp
-*(ptr + i)
-```
-
-means:
+Memory picture if `arr[0]` starts at `0x01ef100`:
 
 ```text
-Go i elements ahead and get the value.
+arr[0] = 10 → 0x01ef100
+arr[1] = 20 → 0x01ef104
+arr[2] = 30 → 0x01ef108
+arr[3] = 40 → 0x01ef10c
+```
+
+So:
+
+```text
+ptr + 1 → next int → 4 bytes ahead
+ptr + 2 → two ints ahead → 8 bytes ahead
+ptr + 3 → three ints ahead → 12 bytes ahead
 ```
 
 ---
 
-## 2B. Addition with Arrays
+## Array Name
 
-Array indexing uses pointer arithmetic internally.
+Array indexing uses pointer arithmetic.
 
 These are the same:
 
@@ -252,23 +294,10 @@ and:
 Example:
 
 ```cpp
-#include <iostream>
-using namespace std;
+int arr[4] = {10, 20, 30, 40};
 
-int main() {
-    int arr[4] = {10, 20, 30, 40};
-
-    cout << arr[0] << endl;       // 10
-    cout << *(arr + 0) << endl;   // 10
-
-    cout << arr[1] << endl;       // 20
-    cout << *(arr + 1) << endl;   // 20
-
-    cout << arr[2] << endl;       // 30
-    cout << *(arr + 2) << endl;   // 30
-
-    return 0;
-}
+cout << arr[2];      // 30
+cout << *(arr + 2);  // 30
 ```
 
 So:
@@ -279,10 +308,10 @@ arr[1] == *(arr + 1)
 arr[2] == *(arr + 2)
 ```
 
-But remember:
+But this is not allowed:
 
 ```cpp
-arr = arr + 1; // ERROR
+arr = arr + 1; // error
 ```
 
 because the array name cannot be reassigned.
@@ -294,11 +323,13 @@ int* ptr = arr;
 ptr = ptr + 1;
 ```
 
-because `ptr` is a normal pointer variable.
+because `ptr` is a normal pointer.
 
 ---
 
-## 2C. Subtraction with Normal Pointers
+# 3. Subtraction
+
+## Normal Pointer
 
 We can subtract from a pointer.
 
@@ -306,7 +337,7 @@ We can subtract from a pointer.
 ptr - 1
 ```
 
-means move one element backward.
+means move 1 element backward.
 
 Example:
 
@@ -317,7 +348,7 @@ using namespace std;
 int main() {
     int arr[4] = {10, 20, 30, 40};
 
-    int* ptr = arr + 3; // ptr points to arr[3]
+    int* ptr = arr + 3; // points to arr[3]
 
     cout << *ptr << endl;       // 40
     cout << *(ptr - 1) << endl; // 30
@@ -328,59 +359,41 @@ int main() {
 }
 ```
 
+Memory idea:
+
+```text
+If ptr points to 0x01ef10c,
+ptr - 1 points to 0x01ef108.
+```
+
+Because it moves back by one `int`, usually 4 bytes.
+
 ---
 
-## 2D. Subtraction with Arrays
+## Array Name
 
-We can use subtraction with an array name in expressions.
-
-Example:
+We can use subtraction in expressions.
 
 ```cpp
 int arr[4] = {10, 20, 30, 40};
+
+cout << *(arr + 3);     // 40
+cout << *(arr + 3 - 1); // 30
 ```
 
-This is allowed:
+But we cannot change the array name itself.
 
 ```cpp
-*(arr + 3)
+arr = arr - 1; // error
 ```
-
-This gives:
-
-```cpp
-40
-```
-
-And this is also allowed:
-
-```cpp
-*(arr + 3 - 1)
-```
-
-This gives:
-
-```cpp
-30
-```
-
-But this is not allowed:
-
-```cpp
-arr = arr + 1; // ERROR
-```
-
-because the array name cannot be reassigned.
 
 ---
 
-## 2E. Subtracting Two Pointers
+## Subtracting Two Pointers
 
 If two pointers point inside the same array, we can subtract them.
 
-The result tells how many elements are between them.
-
-Example:
+The result tells how many **elements** are between them.
 
 ```cpp
 #include <iostream>
@@ -398,44 +411,42 @@ int main() {
 }
 ```
 
-Explanation:
+Why output is `3`:
 
 ```text
 p1 points to index 1
 p2 points to index 4
 
-p2 - p1 = 4 - 1 = 3
+4 - 1 = 3
 ```
 
 Important:
 
 ```text
-Pointer subtraction gives difference in number of elements, not bytes.
+Pointer subtraction gives element difference, not byte difference.
 ```
 
-Do not subtract pointers from different arrays.
+Only subtract pointers from the same array.
 
 ---
 
-# 3. Comparison of Pointers
+# 4. Comparison
+
+## Comparing Normal Pointers
 
 Pointers can be compared.
-
-## 3A. Comparing Normal Pointers
-
-We can compare whether two pointers store the same address.
 
 ```cpp
 p1 == p2
 ```
 
-means both point to the same location.
+means both point to the same address.
 
 ```cpp
 p1 != p2
 ```
 
-means they point to different locations.
+means they point to different addresses.
 
 Example:
 
@@ -460,9 +471,16 @@ int main() {
 
 ---
 
-## 3B. Comparing Pointers Inside the Same Array
+## Comparing Pointers in the Same Array
 
-Pointers inside the same array can be compared using `<`, `>`, `<=`, and `>=`.
+Pointers inside the same array can be compared using:
+
+```cpp
+<
+>
+<=
+>=
+```
 
 Example:
 
@@ -484,15 +502,13 @@ int main() {
 }
 ```
 
-This works because both pointers point inside the same array.
+This works because both pointers belong to the same array.
 
 ---
 
-## 3C. Comparing Array Name and Pointer
+## Comparing Array Name and Pointer
 
 An array name can be compared with a pointer.
-
-Example:
 
 ```cpp
 #include <iostream>
@@ -521,11 +537,9 @@ is true because both represent the address of `arr[0]`.
 
 ---
 
-## 3D. Pointer Loop Using Comparison
+## Pointer Loop Using Comparison
 
 Pointer comparison is often used to loop through an array.
-
-Example:
 
 ```cpp
 #include <iostream>
@@ -569,15 +583,31 @@ arr + 5
 
 points one step after the last element.
 
-It is used as a stopping point.
+It is only used as a stopping point.
 
 Do not dereference it:
 
 ```cpp
-*(arr + 5) // BAD
+*(arr + 5); // bad
 ```
 
 because it is outside the array.
+
+---
+
+# Difference Table
+
+| Operation       | Normal Pointer        | Array Name                           |
+| --------------- | --------------------- | ------------------------------------ |
+| `ptr++`         | Allowed               | `arr++` not allowed                  |
+| `ptr--`         | Allowed               | `arr--` not allowed                  |
+| `ptr + 1`       | Allowed               | `arr + 1` allowed in expressions     |
+| `ptr = ptr + 1` | Allowed               | `arr = arr + 1` not allowed          |
+| `ptr - 1`       | Allowed               | `arr - 1` allowed in expressions     |
+| `ptr = ptr - 1` | Allowed               | `arr = arr - 1` not allowed          |
+| `p2 - p1`       | Allowed if same array | Works with addresses from same array |
+| `ptr == arr`    | Allowed               | Compares addresses                   |
+| `ptr < end`     | Allowed if same array | Used in pointer loops                |
 
 ---
 
@@ -630,9 +660,31 @@ Pointer arithmetic moves by **elements**, not by raw bytes.
 Example:
 
 ```text
-int* moves by 4 bytes usually
-char* moves by 1 byte
-double* moves by 8 bytes usually
+int arr[3] = {10, 20, 30};
+
+If arr[0] is at 0x01ef100:
+
+arr[0] → 0x01ef100
+arr[1] → 0x01ef104
+arr[2] → 0x01ef108
+```
+
+Even though the address jumps by 4 bytes, we write:
+
+```cpp
+ptr++;
+```
+
+because `ptr++` means:
+
+```text
+go to the next element
+```
+
+not:
+
+```text
+go to the next byte
 ```
 
 Memory trick:

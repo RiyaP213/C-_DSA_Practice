@@ -276,6 +276,140 @@ arr[2] == *(arr + 2)
 
 ---
 
+## Array Name and Pointers
+
+In many situations, the name of an array behaves like a pointer to the first element.
+
+Example:
+
+```cpp
+int arr[3] = {10, 20, 30};
+```
+
+Here:
+
+```cpp
+arr
+```
+
+represents the address of the first element.
+
+So:
+
+```cpp
+arr == &arr[0]
+```
+
+And:
+
+```cpp
+arr[0] == *(arr + 0)
+arr[1] == *(arr + 1)
+arr[2] == *(arr + 2)
+```
+
+---
+
+## Normal Pointer vs Array Name
+
+A normal pointer can be reassigned to a new address.
+
+Example:
+
+```cpp
+int a = 10;
+int b = 20;
+
+int* ptr = &a;  // ptr points to a
+ptr = &b;       // now ptr points to b
+```
+
+This is allowed because `ptr` is a normal pointer variable.
+
+---
+
+But an array name cannot be reassigned.
+
+Example:
+
+```cpp
+int arr[3] = {1, 2, 3};
+int other[3] = {4, 5, 6};
+
+arr = other; // ERROR
+```
+
+This is not allowed because `arr` is not a normal pointer variable.
+
+The array name is fixed to the starting memory location of the array.
+
+---
+
+## Moving Pointers vs Moving Array Names
+
+A normal pointer can move to the next element.
+
+Example:
+
+```cpp
+int arr[3] = {10, 20, 30};
+
+int* ptr = arr; // ptr points to arr[0]
+
+ptr++; // allowed, now ptr points to arr[1]
+```
+
+But the array name itself cannot be moved.
+
+```cpp
+int arr[3] = {10, 20, 30};
+
+arr++; // ERROR
+```
+
+This is because `arr` is fixed.
+
+---
+
+## Important Difference
+
+```text
+Normal pointer:
+Can store an address.
+Can be reassigned.
+Can be incremented or decremented.
+
+Array name:
+Represents the starting address of the array.
+Cannot be reassigned.
+Cannot be incremented or decremented.
+```
+
+Memory trick:
+
+```text
+Pointer = movable address holder
+Array name = fixed starting address of the array
+```
+
+So:
+
+```cpp
+int* ptr = arr;
+```
+
+is allowed.
+
+But:
+
+```cpp
+arr = ptr;
+```
+
+is not allowed.
+
+---
+
 ## Modifying Arrays Inside Functions
 
 Since arrays are passed as a pointer to the first element, changes made inside the function affect the original array.
@@ -356,6 +490,20 @@ Simple rule:
 ```text
 Normal variable → passed by value by default
 Array → passed as a pointer to the first element
+```
+
+I was also confused because arrays and pointers look similar.
+
+Clear version:
+
+```text
+Normal pointer:
+A pointer is a variable that stores an address.
+It can be reassigned to another address.
+
+Array name:
+The array name represents the starting address of the array.
+But it is fixed and cannot be reassigned.
 ```
 
 That is why we always pass the array size separately into the function.

@@ -1,6 +1,6 @@
 #include <iostream>
 using namespace std;
-
+// Time complexity: O(n)- in place reversal of the array
 int main() {
     int arr[] = {5, 4, 3, 2, 1};
     int size = sizeof(arr) / sizeof(arr[0]);
@@ -44,7 +44,7 @@ int main() {
         arr[size - i - 1] = temp;             // Put old left element into right position
     }
 
-    cout << "Reversed array: ";
+    cout << "Reversed array: ";x
     for (int i = 0; i < size; i++) {
         cout << arr[i] << " ";
     }

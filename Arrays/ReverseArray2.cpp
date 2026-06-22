@@ -44,7 +44,7 @@ int main() {
         arr[size - i - 1] = temp;             // Put old left element into right position
     }
 
-    cout << "Reversed array: ";x
+    cout << "Reversed array: ";
     for (int i = 0; i < size; i++) {
         cout << arr[i] << " ";
     }

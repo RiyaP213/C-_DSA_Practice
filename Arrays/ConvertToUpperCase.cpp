@@ -4,7 +4,7 @@ using namespace std;
 void ConvertToUpperCase(char word[], int n){
     for(int i=0;i<n;i++){
     if(word[i]>='a' && word[i]<='z'){
-        word[i]=word[i]-32;
+        word[i]=word[i]-'a'+'A';
     }
  }
 }
@@ -16,3 +16,4 @@ int main(){
     cout<<word;
 
 }
+//HW- convert to Lower Case.

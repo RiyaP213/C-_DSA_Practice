@@ -4,7 +4,7 @@ using namespace std;
 
 void clearIthBit(int n, int i)
 {
-    int mask = ~(1 << i); // create a mask by left shifting 1 by i positions
+    int mask = ~(0) << i; // create a mask by left shifting 1 by i positions
     int result = n & mask;   // use bitwise AND to clear the i-th bit
     cout << "The number after clearing the " << i << "th bit is: " << result << endl;
 }

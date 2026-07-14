@@ -1,6 +1,7 @@
 #include<iostream>
 using namespace std;
 int main()
+// even numbers right most bit is 0 and odd numbers right most bit is 1
 {
     int n;
     cout<<"Enter a number: ";

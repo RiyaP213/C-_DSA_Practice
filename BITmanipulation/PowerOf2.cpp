@@ -18,7 +18,4 @@ int main()
 { 
     cout<< IsPowerOf2(16); // Example usage: Check if 16 is a power of 2
     return 0;
-    
-
-
 }

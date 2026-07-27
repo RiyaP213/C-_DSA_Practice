@@ -21,59 +21,43 @@ public:
 
     Node(int value) {
         data = value;
-        next = nullptr;
+        next = NULL;// use "nullptr"
     }
 
     ~Node() {
-        // Destructor
+        if(next!=NULL){
+            delete next;
+            next=NULL;
+            // or u can just do clear()
     }
 };
-```
-
-Memory:
-
-```text
-[data | next]
-```
-
-Example:
-
-```text
-[10 | 0x200]
-```
-
 ---
 
 # 2. LinkedList Class
 
 The linked list stores:
 
-- `head` → first node
-- `tail` → last node
+- `head` → first node pointer
+- `tail` → last node pointer
 
 ```cpp
-class LinkedList {
+class list {
 private:
     Node* head;
     Node* tail;
 
 public:
 
-    LinkedList() {
-        head = tail = nullptr;
+    list() {
+        head = tail = NULL;//use "nullptr" thats compiler friendly.
     }
 
-    ~LinkedList() {
-        clear();
+    ~List() {
+        if(head!=NULL){
+             delete head;
+             head=NULL;// or just use clear() 
+        }
     }
-```
-
-Initially:
-
-```text
-head → nullptr
-tail → nullptr
-```
 
 ---
 
@@ -84,7 +68,7 @@ Adds a node at the beginning.
 ```cpp
 void push_front(int value) {
 
-    Node* newNode = new Node(value);
+    Node* newNode = new Node(value);// allocate memory in heap dynamically
 
     if(head == nullptr) {
         head = tail = newNode;
@@ -99,35 +83,9 @@ void push_front(int value) {
 ### Logic
 
 ```text
-Create node
-
-↓
-
-Connect new node to old head
-
-↓
-
-Move head
+if head==nullptr we know its the first node so we point head and tail to "newnode" if its not the case 
+Create node-> Connect new node to old head (because we are pushing in front -> Move head
 ```
-
-Example
-
-Before
-
-```text
-head
- ↓
-10 → 20
-```
-
-After
-
-```text
-head
- ↓
-5 → 10 → 20
-```
-
 Time Complexity
 
 ```
@@ -158,33 +116,8 @@ void push_back(int value) {
 ### Logic
 
 ```text
-Create node
-
-↓
-
-Connect old tail
-
-↓
-
-Move tail
+if first node head and tail both point to new node else. Create node -> Connect old tail-> Move tail
 ```
-
-Example
-
-Before
-
-```text
-10 → 20
-       ↑
-      tail
-```
-
-After
-
-```text
-10 → 20 → 30
-            ↑
-           tail
 ```
 
 Time Complexity
@@ -192,6 +125,7 @@ Time Complexity
 ```
 O(1)
 ```
+
 
 ---
 
@@ -216,19 +150,7 @@ void print() {
 ### Logic
 
 ```text
-Start at head
-
-↓
-
-Print
-
-↓
-
-Move
-
-↓
-
-Repeat
+Start at head-> Print-> Move-> Repeat.  we take a "temp" because we dont want to lose the head.
 ```
 
 **Never move `head` while printing.**
@@ -245,7 +167,6 @@ O(n)
 
 ```cpp
 void insert(int value, int index) {
-
     if(index == 0) {
         push_front(value);
         return;
@@ -266,17 +187,9 @@ void insert(int value, int index) {
 ### Logic
 
 ```text
-Reach previous node
-
-↓
-
-New node points to next node
-
-↓
-
+Reach previous node->  New node points to next node-> 
 Previous node points to new node
 ```
-
 Time Complexity
 
 ```
@@ -301,23 +214,15 @@ void pop_front() {
 
     delete temp;
 
-    if(head == nullptr)
-        tail = nullptr;
+   // if(head == nullptr)
+   //     tail = nullptr;
 }
 ```
 
 ### Logic
 
 ```text
-Save head
-
-↓
-
-Move head
-
-↓
-
-Delete old head
+Save head-> Move head-> Delete old head
 ```
 
 Time Complexity
@@ -335,45 +240,31 @@ Deletes the last node.
 ```cpp
 void pop_back() {
 
-    if(head == nullptr)
-        return;
+  //  if(head == nullptr)
+     //   return;
 
-    if(head == tail) {
-        delete head;
-        head = tail = nullptr;
-        return;
-    }
+    //if(head == tail) {
+      //  delete head;
+        //head = tail = nullptr;
+        //return;
+   // }
 
     Node* temp = head;
 
-    while(temp->next != tail) {
+    while(temp->next->next != NULL) {
         temp = temp->next;
     }
-
+    temp->next =NULL//temp=tail's prev
     delete tail;
 
     tail = temp;
-
-    tail->next = nullptr;
 }
 ```
 
 ### Logic
 
 ```text
-Reach node before tail
-
-↓
-
-Delete tail
-
-↓
-
-Move tail
-
-↓
-
-Set next = nullptr
+Reach node before tail-> Delete tail-> Move tail-> Set next = nullptr
 ```
 
 Time Complexity
@@ -411,15 +302,7 @@ int search(int key) {
 ### Logic
 
 ```text
-Compare
-
-↓
-
-Move
-
-↓
-
-Repeat
+Compare->  Move-> Repeat
 ```
 
 Time Complexity
@@ -457,18 +340,7 @@ int searchRecursive(int key) {
 ### Logic
 
 ```text
-Current node?
-
-↓
-
-Found?
-
-↓
-
-Search remaining list
-
-↓
-
+Current node?-> Found?-> Search remaining list-> 
 Add 1 while returning
 ```
 
@@ -515,29 +387,14 @@ void reverse() {
 ### Logic
 
 ```text
-Save next
-
-↓
-
-Reverse link
-
-↓
-
-Move prev
-
-↓
-
+Save next->  Reverse link-> Move prev-> 
 Move current
 ```
-
 Time Complexity
-
 ```
 O(n)
 ```
-
 Space Complexity
-
 ```
 O(1)
 ```
@@ -567,23 +424,9 @@ void clear() {
 ### Logic
 
 ```text
-Save node
-
-↓
-
-Move head
-
-↓
-
-Delete node
-
-↓
-
-Repeat
+Save node-> Move head-> Delete node-> Repeat
 ```
-
 Time Complexity
-
 ```
 O(n)
 ```
@@ -651,40 +494,21 @@ int main() {
 ### push_front
 
 ```text
-Create
-↓
-
-Connect
-
-↓
-
+Create-> Connect-> 
 Move head
 ```
 
 ### push_back
 
 ```text
-Create
-↓
-
-Connect tail
-
-↓
-
-Move tail
+Create-> Connect tail-> Move tail
 ```
 
 ### insert
 
 ```text
-Reach previous
-
-↓
-
+Reach previous-> 
 New → Next
-
-↓
-
 Previous → New
 ```
 
@@ -692,13 +516,7 @@ Previous → New
 
 ```text
 Save
-
-↓
-
 Move head
-
-↓
-
 Delete
 ```
 
@@ -706,13 +524,7 @@ Delete
 
 ```text
 Find previous
-
-↓
-
 Delete tail
-
-↓
-
 Move tail
 ```
 
@@ -720,17 +532,8 @@ Move tail
 
 ```text
 Save next
-
-↓
-
 Reverse link
-
-↓
-
 Move prev
-
-↓
-
 Move current
 ```
 
@@ -738,16 +541,62 @@ Move current
 
 ```text
 Start at head
-
-↓
-
 Visit node
-
-↓
-
 Move
-
-↓
-
 Repeat until nullptr
+```
+# 14. Reverse a Linkedlist
+```cpp
+void reverse(){
+    node* curr= head;
+    node * prev = null;
+    tail = head;
+
+    while(curr!=NULL){
+        node*next = curr->next;
+        curr->next =prev;
+    }
+    //update for next itr
+    prev=curr;
+    curr=next;}
+    head= prev;
+}
+
+```
+
+# 15. Remove Nth node
+```cpp
+int getsize(){
+    int sz=0;
+    node* temp= head;
+
+    while(temp!=null){
+        temp=temp->next;
+        sz++;
+    }
+    return sz;
+}
+
+void removeNth(int n){
+    int size =getsize();
+    node* prev =head;
+
+    for(int i=1; i<(size-n);i++){
+        prev= prev->next;
+    }
+    node* toDel= prev->next;
+    cout<<"going to delete :"<<toDel->data<<endl;
+    prev->next =prev->next->next;
+}
+};
+
+```text
+common problems:
+1) Palindrome
+2) Detect and Remove a Cycle in a LL
+3) MergeSort
+4) zig-Zag LL
+5) Doubly Linked List
+
+learn STL- Linkedlist
 ```

@@ -26,3 +26,5 @@ int main(){
 }
 
 // time complexity: O(2^(m+n)) because at each cell, we have two choices: move right or move down.
+// we can optimise this further for linear TC
+// DP also has a better approach

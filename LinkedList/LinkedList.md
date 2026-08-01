@@ -598,5 +598,121 @@ common problems:
 4) zig-Zag LL
 5) Doubly Linked List
 
-learn STL- Linkedlist
+# STL List and Iterator
+
+`std::list` is the STL version of a **doubly linked list**.
+
+To use it:
+
+```cpp
+#include <list>
+```
+
+Creating a list is similar to creating a vector:
+
+```cpp
+vector<int> v;
+list<int> ll;
+```
+
+## Common Functions
+
+```cpp
+ll.push_front(value);   // insert at front
+ll.push_back(value);    // insert at back
+
+ll.pop_front();         // remove first element
+ll.pop_back();          // remove last element
+
+ll.front();             // first value
+ll.back();              // last value
+
+ll.size();              // number of elements
+```
+
+## Iterator
+
+An iterator is an object used to **move through the elements of a container**.
+
+It behaves somewhat like a pointer.
+
+```cpp
+auto it = ll.begin();
+```
+
+- `ll.begin()` → first element
+- `ll.end()` → position after the last element
+- `*it` → value at the iterator
+- `it++` → move to the next element
+- `it--` → move to the previous element
+
+## Insert Using an Iterator
+
+```cpp
+ll.insert(it, value);
+```
+
+This inserts the value **before** the iterator position.
+
+## Complete Code
+
+```cpp
+#include <iostream>
+#include <list>
+#include <iterator>
+using namespace std;
+
+void printList(const list<int>& ll) {
+    for (auto it = ll.begin(); it != ll.end(); it++) {
+        cout << *it << " ";
+    }
+
+    cout << endl;
+}
+
+int main() {
+    list<int> ll;
+
+    ll.push_front(2);
+    ll.push_front(1);
+
+    ll.push_back(3);
+    ll.push_back(4);
+
+    // List: 1 2 3 4
+    printList(ll);
+
+    auto it = ll.begin();
+    it++;                       // points to 2
+
+    ll.insert(it, 10);          // inserts 10 before 2
+
+    // List: 1 10 2 3 4
+    printList(ll);
+
+    cout << "Size: " << ll.size() << endl;
+    cout << "Front: " << ll.front() << endl;
+    cout << "Back: " << ll.back() << endl;
+
+    ll.pop_front();
+    ll.pop_back();
+
+    // List: 10 2 3
+    printList(ll);
+
+    return 0;
+}
+```
+
+## Quick Memory Note
+
+```text
+list<int> ll       → create STL linked list
+
+begin()            → first element
+end()              → after last element
+*it                → current value
+it++               → next element
+
+insert(it, value)  → insert before iterator
 ```

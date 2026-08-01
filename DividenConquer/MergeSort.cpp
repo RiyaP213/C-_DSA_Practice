@@ -2,18 +2,7 @@
 #include <vector>
 using namespace std;
 
-void mergeSort( int arr[], int si, int ei){
 
-    if (si>=ei){// base case: if the starting index is greater than or equal to the ending index, return
-        return;
-    }
-
-    int mid = si+ (ei-si)/2;// get the mid index to divide
-    mergeSort(arr, si, mid);// left half
-    mergeSort(arr, mid+1, ei);// right half
-
-    merge (arr, si, mid, ei);// conquer step: merge the two halves
-}
 
 void merge( int arr[], int si, int mid, int ei){
     vector<int> temp;
@@ -43,6 +32,18 @@ void merge( int arr[], int si, int mid, int ei){
     for (int idx=si, x=0; idx<=ei; idx++){
         arr[idx] = temp[x++];
     }
+}
+void mergeSort( int arr[], int si, int ei){
+
+    if (si>=ei){// base case: if the starting index is greater than or equal to the ending index, return
+        return;
+    }
+
+    int mid = si+ (ei-si)/2;// get the mid index to divide
+    mergeSort(arr, si, mid);// left half
+    mergeSort(arr, mid+1, ei);// right half
+
+    merge (arr, si, mid, ei);// conquer step: merge the two halves
 }
 
 void printArray(int arr[], int n){

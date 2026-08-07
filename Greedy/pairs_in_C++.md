@@ -1,4 +1,3 @@
-````md
 # Pairs in C++
 
 ## What is a Pair?
@@ -488,4 +487,3 @@ sort(v.begin(), v.end(), compare);
 ### Memory line
 
 > **Pair = keep two related values together — `(start,end)`, `(node,weight)`, `(value,index)`, `(distance,node)`.**
-````

@@ -4,7 +4,7 @@ using namespace std;
 // approach: we will sort the jobs according to their profit in decreasing order and then we will
 
 bool compare( pair<int,int>p1, pair<int,int>p2){
-    return p1.first>p2.first;
+    return p1.second>p2.second;
 }
 
 int maxprofit(vector<pair<int,int>> jobs, int n){
@@ -18,7 +18,7 @@ int maxprofit(vector<pair<int,int>> jobs, int n){
                 }
 
                 cout<<"maximum profit = "<<profit<<endl;
-return profit;   }
+return profit;   }}
 
 int main(){
     int n=4;

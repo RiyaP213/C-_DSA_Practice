@@ -16,5 +16,6 @@ int main(){
 
         cout<<"a["<<i<<"] = "<<a[i]<<" b["<<i<<"] = "<<b[i]<<" absDiff = "<<absDiff<<endl;
     }
+    cout<<"minimum sum of absolute differences = "<<absDiff<<endl;
     return 0;
 }

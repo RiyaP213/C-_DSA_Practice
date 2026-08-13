@@ -1,8 +1,4 @@
-Yes. You want the **raw Markdown text directly in the chat**, inside one code block, so when you copy it into `BinaryTrees.md`, VS Code sees the actual `#`, `##`, ` ```cpp `, etc.
 
-Copy everything inside this block:
-
-````markdown
 # Binary Trees
 
 ## What is a Binary Tree?
@@ -1469,5 +1465,4 @@ COMBINE
 ↓
 
 RETURN
-```
-````
+'''
